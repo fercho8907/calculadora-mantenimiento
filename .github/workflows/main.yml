@@ -1,0 +1,11 @@
+name: Verificación
+
+on: [push, pull_request]
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar que existe la página principal
+        run: test -f index.html && echo "index.html encontrado"
