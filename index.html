@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de mantenimiento</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; color: #222; }
+    h1 { font-size: 1.4rem; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+    button { margin-top: 16px; padding: 10px 16px; background: #1f6feb; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    #resultado { margin-top: 20px; padding: 12px; background: #f2f5f9; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de indicadores de mantenimiento</h1>
+  <p>Calcula MTBF, MTTR y disponibilidad de un equipo en un periodo.</p>
+
+  <label for="horas">Horas totales del periodo</label>
+  <input id="horas" type="number" min="0" value="720">
+
+  <label for="paro">Horas de paro por fallas</label>
+  <input id="paro" type="number" min="0" value="24">
+
+  <label for="fallas">Número de fallas</label>
+  <input id="fallas" type="number" min="1" value="4">
+
+  <button onclick="calcular()">Calcular</button>
+  <div id="resultado"></div>
+
+  <script>
+    function calcular() {
+      const horas = Number(document.getElementById("horas").value);
+      const paro = Number(document.getElementById("paro").value);
+      const fallas = Number(document.getElementById("fallas").value);
+      const salida = document.getElementById("resultado");
+
+      if (horas <= 0 || fallas <= 0 || paro < 0 || paro > horas) {
+        salida.textContent = "Revisa los datos: las horas y las fallas deben ser mayores que cero, y el paro no puede superar las horas del periodo.";
+        return;
+      }
+
+      const mtbf = (horas - paro) / fallas;
+      const mttr = paro / fallas;
+      const disponibilidad = mtbf / (mtbf + mttr) * 100;
+
+      salida.innerHTML =
+        "<p><b>MTBF:</b> " + mtbf.toFixed(1) + " h</p>" +
+        "<p><b>MTTR:</b> " + mttr.toFixed(1) + " h</p>" +
+        "<p><b>Disponibilidad:</b> " + disponibilidad.toFixed(2) + " %</p>";
+    }
+  </script>
+</body>
+</html>
